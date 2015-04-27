@@ -2,10 +2,11 @@
 if [ ! -f black.png ]
 then
 convert -size 1920x1080 xc:#000000 black.png
+#convert level2_round_grey.png -background black -gravity center -extent 1920x1080  black.png
 fi
 killall feh
 trap "killall feh; killall omxplayer" 1 2 3 15
-feh -x black.png &
+feh -F -x black.png &
 while true
 do
   if [ "$(python ./spacestatus.py)" = "False" ]
