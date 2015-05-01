@@ -13,7 +13,7 @@ do
   then # test on false, so in case of network fail, it defaults to playing
     sleep 60
   else
-    ls *mp4 |
+    ls ~/*mp4 |
     while read video
     do
       omxplayer "$video" </dev/null 
