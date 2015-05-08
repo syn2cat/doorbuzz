@@ -8,12 +8,15 @@ from math import *
 from neopixel import *
 
 # LED strip configuration:
-LED_COUNT      = 1       # Number of LED pixels.
+LED_COUNT      = 61      # Number of LED pixels.
 LED_PIN        = 18      # GPIO pin connected to the pixels (must support PWM!).
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA        = 5       # DMA channel to use for generating signal (try 5)
 LED_BRIGHTNESS = 100       # Set to 0 for darkest and 255 for brightest
 LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
+
+def clockcalc(value):
+     return 1+((30+int(value))%60)
 
 # Main program logic follows:
 if __name__ == '__main__':
@@ -56,7 +59,17 @@ if __name__ == '__main__':
 	  pulsewidth=50
 	  while True:
 	    for i in range(pulsewidth):
+	      color=Color(0,0,0)
+              for j in range(0,60):
+                strip.setPixelColor(clockcalc(j), color)
 	      trigo=sin(i/pulsewidth*pi)
-	      strip.setPixelColor(0, Color(int(r*trigo),int(g*trigo),int(b*trigo)))
+	      color=Color(int(r*trigo),int(g*trigo),int(b*trigo))
+              clockpos=int(time.strftime('%I',time.localtime()))*5
+              for j in range(-2,3):
+                strip.setPixelColor(clockcalc(clockpos+j),Color(30,30,30))
+              for j in range(0,60,5):
+                strip.setPixelColor(clockcalc(j), color)
+              strip.setPixelColor(clockcalc(time.strftime('%M',time.localtime())),Color(30,0,0))
+              strip.setPixelColor(clockcalc(time.strftime('%S',time.localtime())),Color(0,30,0))
               strip.show()
               time.sleep(50/1000.0)

@@ -17,6 +17,7 @@ do
     while read video
     do
       omxplayer "$video" </dev/null 
+      sleep 2
     done
   fi
 done
