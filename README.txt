@@ -21,6 +21,7 @@ cat > /home/pi/.config/lxsession/LXDE/autostart <<"EOF"
 @./doorbuzz/buzzctrl.sh
 @./doorbuzz/videoplayer.sh
 @sudo python ./doorbuzz/shutdownbutton.py
+@./doorbuzz/phone_notification_client.sh
 EOF
 
 
@@ -33,6 +34,9 @@ you can add videos and they will be taken into account automatically
 
 when booting, the button led uses morsecode to send the low byte of the 
 IP adress in decimal
+
+phone_notification_client.sh communicates with pidor's doorbuzz_wrapper.sh
+to command the flash light
 
 todo
 ====
