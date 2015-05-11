@@ -18,6 +18,7 @@ cat > /home/pi/.config/lxsession/LXDE/autostart <<"EOF"
 @xset -dpms
 @xset s noblank
 @unclutter -display :0 -noevents -grab
+@sudo python ./doorbuzz/setneocolor.py
 @./doorbuzz/buzzctrl.sh
 @./doorbuzz/videoplayer.sh
 @sudo python ./doorbuzz/shutdownbutton.py
@@ -37,6 +38,11 @@ IP adress in decimal
 
 phone_notification_client.sh communicates with pidor's doorbuzz_wrapper.sh
 to command the flash light
+
+# new: using redis to manage the 60 led circle
+sudo apt-get install python-pip redis-server
+sudo pip install redis
+#the redi.sh comes from here: https://github.com/crypt1d/redi.sh
 
 todo
 ====

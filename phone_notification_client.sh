@@ -5,6 +5,9 @@ run_file="/var/run/phone_ringing_status"
 pidor=root@10.2.113.2
 old_status=0
 new_status=0
+cd $(dirname "$0")
+
+
 while true # empty pipe
 do
   sleep 1
@@ -45,8 +48,10 @@ do
     fi
     echo "phone status change detected"
     if [ "$new_status" -eq 0 ]; then
+      echo "neoaction=flash" | ./redi.sh 
       echo "flashon" >&"${COPROC[1]}"
     else
+      echo "neoaction=pulse" | ./redi.sh 
       echo "flashoff" >&"${COPROC[1]}"
     fi
 #    echo $new_status > ${run_file}
