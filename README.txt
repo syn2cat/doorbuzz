@@ -49,6 +49,12 @@ to command the flash light
 sudo apt-get install python-pip redis-server
 sudo pip install redis
 #the redi.sh comes from here: https://github.com/crypt1d/redi.sh
+cd ~
+git clone https://github.com/jgarff/rpi_ws281x.git
+cd rpi_ws281x
+sudo apt-get install scons
+scons
+sudo scons
 
 # setup watchdog
 sudo modprobe bcm2708_wdog
