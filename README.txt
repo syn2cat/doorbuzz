@@ -1,6 +1,12 @@
 # doorbuzz
 raspberry Pi opening the front door and playing videos
 the button has an RGB led to show status
+features:
+* button to push to open the door
+* LED ring of 60 neopixels showing the current clock
+* video player showing some default videos while the space is open
+* a shutdown button for a clean shutdown
+* watchdog
 
 how to install
 ==============
@@ -43,6 +49,20 @@ to command the flash light
 sudo apt-get install python-pip redis-server
 sudo pip install redis
 #the redi.sh comes from here: https://github.com/crypt1d/redi.sh
+
+# setup watchdog
+sudo modprobe bcm2708_wdog
+echo "bcm2708_wdog" | sudo tee -a /etc/modules
+
+
+sudo apt-get install watchdog
+sudo update-rc.d watchdog defaults
+
+sudo sed -i 's/#\(watchdog-device\)/\1/
+             s/#\(max-load-1\s\)/\1/
+            ' /etc/watchdog.conf
+
+sudo service watchdog start
 
 todo
 ====
