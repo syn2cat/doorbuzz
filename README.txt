@@ -70,6 +70,10 @@ sudo sed -i 's/#\(watchdog-device\)/\1/
 
 sudo service watchdog start
 
+Note: projectionscreen.sh is a standalone program called remotely by pidor
+because pidor knows the IP adress of the projector but doorbuzz has the RF remote connected.
+The remote command works with ssh, so install pidor's root pub key into
+~pi/.ssh/authorized_keys
 todo
 ====
 create a config file
