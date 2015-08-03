@@ -28,4 +28,5 @@ case "$1" in
       ;;
   stop) rollstop
       ;;
+  *) echo "usage: $0 {up|down|stop}"
 esac
