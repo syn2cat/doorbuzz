@@ -7,6 +7,7 @@ fi
 killall feh
 trap "killall feh; killall omxplayer" 1 2 3 15
 feh -F -x black.png &
+#feh black.png &
 while true
 do
   if [ "$(python ./spacestatus.py)" = "False" ]

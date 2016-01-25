@@ -13,7 +13,7 @@ how to install
 
 sudo vi /etc/xdg/lxsession/LXDE/autostart
 remove screensaver
-sudo apt-get install unclutter xdotool git-core screen imagemagick
+sudo apt-get install unclutter xdotool git-core screen imagemagick x11-xserver-utils
 git clone git://git.drogon.net/wiringPi
 cd wiringPi
 ./build
@@ -27,6 +27,7 @@ cat > /home/pi/.config/lxsession/LXDE/autostart <<"EOF"
 @sudo python ./doorbuzz/setneocolor.py
 @./doorbuzz/buzzctrl.sh
 @./doorbuzz/videoplayer.sh
+@./doorbuzz/arpspoofdetect.sh
 @sudo python ./doorbuzz/shutdownbutton.py
 @./doorbuzz/phone_notification_client.sh
 EOF
