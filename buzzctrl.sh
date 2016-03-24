@@ -1,5 +1,4 @@
 #!/bin/bash
-# led is not neopixel, so use the python lib for that
 BUTTONPIN=25
 BUZZERURL="$(cat "$(dirname "$0")"/secret.txt)/state.xml?relay1State=2&pulseTime1=5"
 BUZZERSTATUSURL="$(cat "$(dirname "$0")"/secret.txt)/state.xml"
@@ -9,11 +8,13 @@ cd $(dirname "$0")
 
 showleds() {
   ./redi.sh <<EOF
+    valid=no
     neoaction=$1
     neored=$2
     neogreen=$3
     neoblue=$4
-    neomorse=$5
+    neovalue=$5
+    valid=yes
 EOF
 #  sudo kill $(ps -edf| awk '/[s]etneocolor.py/{print $2}' ) 2>/dev/null
 #  sudo python /home/pi/doorbuzz/setneocolor.py $1 $2 $3 $4
@@ -58,7 +59,7 @@ morse[8]="---.."
 morse[9]="----."
 morseled() {
   message=$1
-echo $message
+  logger $0 morseled $message
   msglen=${#message}
   pos=0
   morsecode=""
@@ -75,14 +76,36 @@ echo $morsecode
 
 echo
 }
+dialcode() {
+# shows number code on clock dial
+  message=$1
+  logger $0 dialcode $message
+  msglen=${#message}
+  pos=0
+  while [ $pos -lt $msglen ]
+  do
+    dcode="${message:${pos}:1}"
+    dcode=$((dcode*5))   # convert numbers into clock values 
+    pos=$((pos+1))
+echo $dcode
+    red=$2
+    green=$3
+    blue=$4
+    showleds set 0 0 0
+    showleds number $((red/ATTENUATION)) $((green/ATTENUATION)) $((blue/ATTENUATION)) "$dcode"
+    sleep 1
+  done
+  showleds set 0 0 0
+}
 
-echo "morsing IP"
-morseled "$(hostname -I|awk -F. '{sub(" ","",$NF);printf $NF}')" 255 0 0
-sleep 10
-echo "Main loop"
+logger $0 "morsing IP"
+#morseled "$(hostname -I|awk -F. '{sub(" ","",$NF);printf $NF}')" 255 0 0
+dialcode "$(hostname -I|awk -F. '{sub(" ","",$NF);printf $NF}')" 255 0 0
+sleep 1
+logger $0 "Main loop"
 while true
 do
-  ledcolor 0 255 255
+  #ledcolor 0 255 255
   pulsepid=$(pulseon 0 0 255 )
   trap "ledcolor 0 0 0;exit" 1 2 3
   gpio -g wfi $BUTTONPIN falling
@@ -91,12 +114,13 @@ do
     gpio -g wfi $BUTTONPIN falling
   done
   ledcolor 0 255 255
-  echo "Pushiii"
+  logger $0 "Big Red Button pushed"
   wget -O - -S --timeout=1 --tries=1 "$BUZZERURL" 2>&1
   ret=$?
   if [ $ret -ne 0 ] 
   then
-    morseled "$ret" 255 0 0
+    #morseled "$ret" 255 0 0
+    dialcode "$ret" 255 0 0
     sleep 5
   else
     while wget -O - --timeout=1 --tries=1 $BUZZERSTATUSURL|grep '<relay1state>1</relay1state>'
@@ -107,7 +131,7 @@ do
       sleep 0.1
     done
   fi
-  echo "DOOONE"
+  logger $0 "button push action finished"
 done
 
 

@@ -17,10 +17,10 @@ do
     ret=$?
     if [ $ret -eq 1 ]  # no more coprocess
     then
-      echo "connecting to pidor"
+      logger $0 "connecting to pidor"
       coproc ssh -i ~/.ssh/doorbuzz $pidor
       sleep 10
-      echo "connected"
+      logger $0 "connected"
       echo "flashoff" >&"${COPROC[1]}"
       ret=0
     fi
@@ -28,7 +28,7 @@ do
     then
       break
     fi
-    echo "$status"
+    logger $0 "$status"
   done
   echo "spacestatus" >&"${COPROC[1]}"
   read status <&"${COPROC[0]}"
@@ -46,7 +46,7 @@ do
     if [ "$new_status" -eq "$old_status" ]; then
         continue
     fi
-    echo "phone status change detected"
+    logger $0 "phone status change detected"
     if [ "$new_status" -eq 0 ]; then
       echo "neoaction=flash" | ./redi.sh 
       echo "flashon" >&"${COPROC[1]}"

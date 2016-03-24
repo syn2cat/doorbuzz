@@ -30,6 +30,10 @@ def wheel(pos):
 def clockcalc(value):
      return 1+((30+int(value))%60)
 
+def showit():
+  if ( valid == "yes" ):
+    strip.show()
+
 # Main program logic follows:
 if __name__ == '__main__':
       # Create NeoPixel object with appropriate configuration.
@@ -55,17 +59,31 @@ if __name__ == '__main__':
           action=myredis.get('neoaction')
         except:
           action="set"
+        try:
+	  valid=myredis.get('valid')
+	except:
+	  valid="yes"
+        if ( valid != "yes" ):
+          continue
 	if(action == "set"):
           print "Color set to: ",r,g,b
           for i in range(0,LED_COUNT):
             strip.setPixelColor(i, Color(r,g,b))
-          strip.show()
+          showit()
+	if(action == "number"):
+	  tmp=myredis.get('neovalue')
+	  if(not tmp):
+	    continue
+	  i=clockcalc(int(tmp))
+	  print "Digit ",i," set to: ",r,g,b
+          strip.setPixelColor(i, Color(r,g,b))
+          showit()
         if(action == "morse"):
 	  print "Morsing with: ",r,g,b
 	  speed=10
 	  for i in range(0,LED_COUNT):
             strip.setPixelColor(i, Color(0,0,0))
-	  morsecode=myredis.get('neomorse')
+	  morsecode=myredis.get('neovalue')
           morsep=1
 	  for c in morsecode:
 	    if c==".":
@@ -91,7 +109,7 @@ if __name__ == '__main__':
               morsep+=1
               strip.setPixelColor(morsep, Color(0,0,0))
               morsep+=1
-	  strip.show() 
+	  showit() 
 	  time.sleep(1)
 	if(action == "pulse"):
 	  print "Pulsing with: ",r,g,b
@@ -112,7 +130,7 @@ if __name__ == '__main__':
                 strip.setPixelColor(clockcalc(j), color)
               strip.setPixelColor(clockcalc(time.strftime('%M',time.localtime())),Color(30,0,0))
               strip.setPixelColor(clockcalc(time.strftime('%S',time.localtime())),Color(0,30,0))
-              strip.show()
+	      showit() 
               time.sleep(50/1000.0)
                 
         if(action == "flash"):
@@ -129,7 +147,7 @@ if __name__ == '__main__':
                 for q in range(3):
                         for i in range(0, strip.numPixels(), 3):
                                 strip.setPixelColor(i+q, wheel((i+j) % 255))
-                        strip.show()
+	                showit() 
                         time.sleep(wait_ms/1000.0)
                         for i in range(0, strip.numPixels(), 3):
                                 strip.setPixelColor(i+q, 0)

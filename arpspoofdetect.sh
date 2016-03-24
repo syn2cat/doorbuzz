@@ -24,7 +24,7 @@ pulseon() {
   echo $!
 }
 
-echo "Initializing hardware"
+logger $0 "Initializing hardware"
 # the button
 
 ledcolor() {
@@ -33,7 +33,7 @@ ledcolor() {
   blue=$3
   showleds set $((red/ATTENUATION)) $((green/ATTENUATION)) $((blue/ATTENUATION))
 }
-echo "Main loop"
+logger $0 "Main loop"
 while true
 do
 if [ $(arp -a | awk '{arp[$2]=$4;ip[$4]=ip[$4]" "$2}END{print ip[arp["(10.2.113.1)"]]}' | wc -w) -gt 1 ]
