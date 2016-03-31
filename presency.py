@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+
 # this gives number of people present via spaceapi
 # but if network down, this does not work
 # better get data direct from pidor or peoplecounter

@@ -1,4 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # sets color of first neo pixel
 from __future__ import division
 import time
@@ -43,11 +44,11 @@ if __name__ == '__main__':
       myredis=redis.StrictRedis(host='localhost', port=6379, db=0)
       while True:
         time.sleep(50/1000.0)
-        try: 
+        try:
           r=int(myredis.get('neored'))
         except:
           r=0
-        try: 
+        try:
           g=int(myredis.get('neogreen'))
         except:
           g=0
@@ -109,7 +110,7 @@ if __name__ == '__main__':
               morsep+=1
               strip.setPixelColor(morsep, Color(0,0,0))
               morsep+=1
-	  showit() 
+	  showit()
 	  time.sleep(1)
 	if(action == "pulse"):
 	  print "Pulsing with: ",r,g,b
@@ -137,9 +138,9 @@ if __name__ == '__main__':
               strip.setPixelColor(clockcalc(time.strftime('%M',time.localtime())),Color(30,0,0))
               # put the seconds hand as green
               strip.setPixelColor(clockcalc(time.strftime('%S',time.localtime())),Color(0,30,0))
-	      showit() 
+	      showit()
               time.sleep(50/1000.0)
-                
+
         if(action == "flash"):
           print "Flashing with: ",r,g,b
           print myredis.get('neoaction')
@@ -154,7 +155,7 @@ if __name__ == '__main__':
                 for q in range(3):
                         for i in range(0, strip.numPixels(), 3):
                                 strip.setPixelColor(i+q, wheel((i+j) % 255))
-	                showit() 
+	                showit()
                         time.sleep(wait_ms/1000.0)
                         for i in range(0, strip.numPixels(), 3):
                                 strip.setPixelColor(i+q, 0)
