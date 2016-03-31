@@ -26,7 +26,7 @@ sudo vi /etc/xdg/lxsession/LXDE/autostart
 ```
 
 * Copy the files present in `root_files` accordingly on the file system
-* Set the hostname: replace the content of `/etc/hostname` with doorbuzz
+* Set the hostname: replace the content of `/etc/hostname` with door-buzz
 
 * Install the suff
 
