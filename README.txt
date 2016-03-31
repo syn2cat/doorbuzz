@@ -11,14 +11,32 @@ raspberry Pi opening the front door and playing videos the button has an RGB led
 how to install
 ==============
 
+* The basics
+
+```
+sudo apt-get install vim tmux
+```
+
+* If you want to chroot into the image have a look at [this script](https://github.com/CIRCL/Circlean/blob/master/proper_chroot.sh)
+
+* Remove screensaver from `/etc/xdg/lxsession/LXDE/autostart`
+
 ``` bash
 sudo vi /etc/xdg/lxsession/LXDE/autostart
-remove screensaver
+```
+
+* Copy the files present in `root_files` accordingly on the file system
+* Set the hostname: replace the content of `/etc/hostname` with doorbuzz
+
+* Install the suff
+
+``` bash
 sudo apt-get install unclutter xdotool git-core screen imagemagick x11-xserver-utils
 git clone git://git.drogon.net/wiringPi
 cd wiringPi
 ./build
 
+git clone https://github.com/syn2cat/doorbuzz
 mkdir -p /home/pi/.config/lxsession/LXDE/
 cat > /home/pi/.config/lxsession/LXDE/autostart <<"EOF"
 @xset s off
@@ -48,7 +66,7 @@ when booting, the button led uses morsecode to send the low byte of the IP adres
 
 ```
 sudo apt-get install python-pip redis-server
-sudo pip install redis
+sudo pip install redis neopixel
 ```
 
 # the redi.sh comes from here: https://github.com/crypt1d/redi.sh
@@ -57,9 +75,11 @@ sudo pip install redis
 cd ~
 git clone https://github.com/jgarff/rpi_ws281x.git
 cd rpi_ws281x
-sudo apt-get install scons
+sudo apt-get install scons swig python-dev
 scons
 sudo scons
+cd python
+sudo python setup.py install
 ```
 
 # setup watchdog
