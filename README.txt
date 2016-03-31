@@ -1,7 +1,7 @@
 # doorbuzz
-raspberry Pi opening the front door and playing videos
-the button has an RGB led to show status
-features:
+
+raspberry Pi opening the front door and playing videos the button has an RGB led to show status features:
+
 * button to push to open the door
 * LED ring of 60 neopixels showing the current clock
 * video player showing some default videos while the space is open
@@ -11,6 +11,7 @@ features:
 how to install
 ==============
 
+``` bash
 sudo vi /etc/xdg/lxsession/LXDE/autostart
 remove screensaver
 sudo apt-get install unclutter xdotool git-core screen imagemagick x11-xserver-utils
@@ -31,33 +32,39 @@ cat > /home/pi/.config/lxsession/LXDE/autostart <<"EOF"
 @sudo python ./doorbuzz/shutdownbutton.py
 @./doorbuzz/phone_notification_client.sh
 EOF
+```
 
+* connect the button and LED to pins as shown in `buzzctrl.sh`
+* create a file "secret.txt" containing the http://user:pass@10.1.1.xx part of the URL
+* adapt the URL in buzzctrl.sh
+* adapt spaceapi URL in spacestatus.py
+* put .mp4 videos into ~pi/ and they will show when your hackerspace is open you can add videos and they will be taken into account automatically
 
-connect the button and LED to pins as shown in buzzctrl.sh
-create a file "secret.txt" containing the http://user:pass@10.1.1.xx part of the URL
-adapt the URL in buzzctrl.sh
-adapt spaceapi URL in spacestatus.py
-put .mp4 videos into ~pi/ and they will show when your hackerspace is open
-you can add videos and they will be taken into account automatically
+when booting, the button led uses morsecode to send the low byte of the IP adress in decimal
 
-when booting, the button led uses morsecode to send the low byte of the 
-IP adress in decimal
-
-phone_notification_client.sh communicates with pidor's doorbuzz_wrapper.sh
-to command the flash light
+`phone_notification_client.sh` communicates with pidor's `doorbuzz_wrapper.sh` to command the flash light
 
 # new: using redis to manage the 60 led circle
+
+```
 sudo apt-get install python-pip redis-server
 sudo pip install redis
-#the redi.sh comes from here: https://github.com/crypt1d/redi.sh
+```
+
+# the redi.sh comes from here: https://github.com/crypt1d/redi.sh
+
+```
 cd ~
 git clone https://github.com/jgarff/rpi_ws281x.git
 cd rpi_ws281x
 sudo apt-get install scons
 scons
 sudo scons
+```
 
 # setup watchdog
+
+```
 sudo modprobe bcm2708_wdog
 echo "bcm2708_wdog" | sudo tee -a /etc/modules
 
@@ -70,14 +77,16 @@ sudo sed -i 's/#\(watchdog-device\)/\1/
             ' /etc/watchdog.conf
 
 sudo service watchdog start
+```
 
-Note: projectionscreen.sh is a standalone program called remotely by pidor
-because pidor knows the IP adress of the projector but doorbuzz has the RF remote connected.
-The remote command works with ssh, so install pidor's root pub key into
-~pi/.ssh/authorized_keys
+
+Note: `projectionscreen.sh` is a standalone program called remotely by pidor because pidor knows the IP adress of the projector but doorbuzz has the RF remote connected.
+The remote command works with ssh, so install pidor's root pub key into `~pi/.ssh/authorized_keys`
+
 todo
 ====
-create a config file
-put more of the hardcoded values from code into parameters
-make code resilient against missing commands (e.g. gpio not in PATH)
-move script to run in screen instead starting from rc.local
+
+* create a config file
+* put more of the hardcoded values from code into parameters
+* make code resilient against missing commands (e.g. gpio not in PATH)
+* move script to run in screen instead starting from rc.local
