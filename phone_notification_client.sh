@@ -30,6 +30,14 @@ do
     fi
     logger $0 "$status"
   done
+  ocounter="$counter"
+  echo "peoplecounter" >&"${COPROC[1]}"
+  read counter <&"${COPROC[0]}"
+  if [ "$counter" != "$ocounter" ]
+  then
+    logger $0 peoplecounter=$counter
+    echo "neocounter=$counter" | ./redi.sh
+  fi 
   echo "spacestatus" >&"${COPROC[1]}"
   read status <&"${COPROC[0]}"
   if ! [ "$status" = "open" ]; then   # do nothing if space is closed

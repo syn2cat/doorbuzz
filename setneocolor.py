@@ -118,17 +118,24 @@ if __name__ == '__main__':
 	    for i in range(pulsewidth):
               if(action!=myredis.get('neoaction')):
                 break
+              # reset all pixels to black
 	      color=Color(0,0,0)
               for j in range(0,60):
                 strip.setPixelColor(clockcalc(j), color)
-	      trigo=sin(i/pulsewidth*pi)
-	      color=Color(int(r*trigo),int(g*trigo),int(b*trigo))
-              clockpos=int(time.strftime('%I',time.localtime()))*5
+              # put the hours hand as white, skew by 5 depending on minutes value
+              clockpos=int(int(time.strftime('%I',time.localtime()))*5+int(time.strftime('%M',time.localtime()))/60*5)
               for j in range(-2,3):
                 strip.setPixelColor(clockcalc(clockpos+j),Color(30,30,30))
+              # set the hours marks as a plusing blue
+	      trigo=sin(i/pulsewidth*pi)
+	      color=Color(int(r*trigo),int(g*trigo),int(b*trigo))
               for j in range(0,60,5):
                 strip.setPixelColor(clockcalc(j), color)
+              # put the current people count as magenta
+              strip.setPixelColor(clockcalc(myredis.get('neocounter')),Color(10,0,10))
+              # put the minute hand as red
               strip.setPixelColor(clockcalc(time.strftime('%M',time.localtime())),Color(30,0,0))
+              # put the seconds hand as green
               strip.setPixelColor(clockcalc(time.strftime('%S',time.localtime())),Color(0,30,0))
 	      showit() 
               time.sleep(50/1000.0)
