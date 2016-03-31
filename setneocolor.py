@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # sets color of first neo pixel
-from __future__ import division
+
 import time
 import sys
 from math import *
@@ -66,7 +66,7 @@ if __name__ == '__main__':
         if ( valid != "yes" ):
           continue
 	if(action == "set"):
-          print "Color set to: ",r,g,b
+          print("Color set to: ",r,g,b)
           for i in range(0,LED_COUNT):
             strip.setPixelColor(i, Color(r,g,b))
           showit()
@@ -75,11 +75,11 @@ if __name__ == '__main__':
 	  if(not tmp):
 	    continue
 	  i=clockcalc(int(tmp))
-	  print "Digit ",i," set to: ",r,g,b
+	  print("Digit ",i," set to: ",r,g,b)
           strip.setPixelColor(i, Color(r,g,b))
           showit()
         if(action == "morse"):
-	  print "Morsing with: ",r,g,b
+	  print("Morsing with: ",r,g,b)
 	  speed=10
 	  for i in range(0,LED_COUNT):
             strip.setPixelColor(i, Color(0,0,0))
@@ -112,7 +112,7 @@ if __name__ == '__main__':
 	  showit() 
 	  time.sleep(1)
 	if(action == "pulse"):
-	  print "Pulsing with: ",r,g,b
+	  print("Pulsing with: ",r,g,b)
 	  pulsewidth=50
 	  while (action==myredis.get('neoaction')):
 	    for i in range(pulsewidth):
@@ -141,14 +141,14 @@ if __name__ == '__main__':
               time.sleep(50/1000.0)
                 
         if(action == "flash"):
-          print "Flashing with: ",r,g,b
-          print myredis.get('neoaction')
+          print("Flashing with: ",r,g,b)
+          print(myredis.get('neoaction'))
           wait_ms=50
           """Rainbow movie theater light style chaser animation."""
 	  while (action==myredis.get('neoaction')):
-            print " Flashing with: ",r,g,b
+            print(" Flashing with: ",r,g,b)
             for j in range(256):
-                print "  Flashing with: ",r,g,b
+                print("  Flashing with: ",r,g,b)
                 if(action!=myredis.get('neoaction')):
                   break
                 for q in range(3):

@@ -9,7 +9,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(buttonpin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 while True:
-  print "waiting..."
+  print("waiting...")
   os.system('logger shutdownbutton waiting for press...')
   try:  
     GPIO.wait_for_edge(buttonpin, GPIO.FALLING)  
