@@ -37,8 +37,7 @@ cd wiringPi
 ./build
 
 git clone https://github.com/syn2cat/doorbuzz
-mkdir -p /home/pi/.config/lxsession/LXDE/
-cat > /home/pi/.config/lxsession/LXDE/autostart <<"EOF"
+cat > /home/pi/.config/lxsession/LXDE-pi/autostart <<"EOF"
 @xset s off
 @xset -dpms
 @xset s noblank
@@ -65,11 +64,10 @@ when booting, the button led uses morsecode to send the low byte of the IP adres
 # new: using redis to manage the 60 led circle
 
 ```
-sudo apt-get install python-pip redis-server
-sudo pip install redis neopixel
+sudo apt-get install python-pip redis-server python-redis
 ```
 
-# the redi.sh comes from here: https://github.com/crypt1d/redi.sh
+* redi.sh comes from here: https://github.com/crypt1d/redi.sh
 
 ```
 cd ~
@@ -77,7 +75,6 @@ git clone https://github.com/jgarff/rpi_ws281x.git
 cd rpi_ws281x
 sudo apt-get install scons swig python-dev
 scons
-sudo scons
 cd python
 sudo python setup.py install
 ```
