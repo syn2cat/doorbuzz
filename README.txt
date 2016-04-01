@@ -100,6 +100,14 @@ sudo service watchdog start
 Note: `projectionscreen.sh` is a standalone program called remotely by pidor because pidor knows the IP adress of the projector but doorbuzz has the RF remote connected.
 The remote command works with ssh, so install pidor's root pub key into `~pi/.ssh/authorized_keys`
 
+# setup lirc for AV-receiver remote control
+
+```
+sudo-apt-get install lirc
+sudo /bin/su -c "echo 'dtoverlay=lirc-rpi,gpio_out_pin=23,gpio_in_pin=22' >> /boot/config.txt"
+```
+
+
 todo
 ====
 
