@@ -13,7 +13,7 @@ do
   sleep 1
   while true
   do 
-    read -t 1 status <&"${COPROC[0]}"
+    read -t 1 status <&"${COPROC[0]}" 2>/dev/null
     ret=$?
     if [ $ret -eq 1 ]  # no more coprocess
     then
@@ -56,10 +56,10 @@ do
     fi
     logger $0 "phone status change detected"
     if [ "$new_status" -eq 0 ]; then
-      echo "neoaction=flash" | ./redi.sh 
+      printf "neoaction=flash\nvalid=yes\n" | ./redi.sh 
       echo "flashon" >&"${COPROC[1]}"
     else
-      echo "neoaction=pulse" | ./redi.sh 
+      printf "neoaction=pulse\nvalid=yes\n" | ./redi.sh 
       echo "flashoff" >&"${COPROC[1]}"
     fi
 #    echo $new_status > ${run_file}

@@ -66,10 +66,11 @@ if __name__ == '__main__':
 	  valid="yes"
         if ( valid != "yes" ):
           continue
+        myredis.set('valid','no')
 	if(action == "set"):
           print "Color set to: ",r,g,b
           for i in range(0,LED_COUNT):
-            strip.setPixelColor(i, Color(r,g,b))
+            strip.setPixelColor(i, Color(g,r,b))
           showit()
 	if(action == "number"):
 	  tmp=myredis.get('neovalue')

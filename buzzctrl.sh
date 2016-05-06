@@ -8,7 +8,6 @@ cd $(dirname "$0")
 
 showleds() {
   ./redi.sh <<EOF
-    valid=no
     neoaction=$1
     neored=$2
     neogreen=$3
@@ -125,10 +124,10 @@ do
   else
     while wget -O - --timeout=1 --tries=1 $BUZZERSTATUSURL|grep '<relay1state>1</relay1state>'
     do
-      ledcolor 0 255 0
-      sleep 0.9
-      ledcolor 0 255 255
-      sleep 0.1
+      ledcolor 0 255 0 
+#      sleep 0.2
+      ledcolor 0 255 255 
+#      sleep 0.2
     done
   fi
   logger $0 "button push action finished"
