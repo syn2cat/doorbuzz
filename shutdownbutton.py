@@ -10,7 +10,7 @@ import os
 GPIO.setmode(GPIO.BCM)
 
 GPIO.setup(buttonpin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-
+exit
 while True:
   print "waiting..."
   os.system('logger shutdownbutton waiting for press...')
@@ -18,7 +18,7 @@ while True:
     GPIO.wait_for_edge(buttonpin, GPIO.FALLING)
     print('Button Pressed')
     os.system('logger shutdownbutton pressen. bye bye')
-    os.system("shutdown now -h")
+    # os.system("shutdown now -h")
   except KeyboardInterrupt:
     GPIO.cleanup()       # clean up GPIO on CTRL+C exit
 GPIO.cleanup()           #
