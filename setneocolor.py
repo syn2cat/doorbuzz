@@ -134,7 +134,8 @@ if __name__ == '__main__':
               for j in range(0,60,5):
                 strip.setPixelColor(clockcalc(j), color)
               # put the current people count as magenta
-              strip.setPixelColor(clockcalc(myredis.get('neocounter')),Color(10,0,10))
+              if myredis.get('neocounter') >= 0:
+                strip.setPixelColor(clockcalc(myredis.get('neocounter')),Color(10,0,10))
               # put the minute hand as red
               strip.setPixelColor(clockcalc(time.strftime('%M',time.localtime())),Color(30,0,0))
               # put the seconds hand as green
