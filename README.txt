@@ -15,7 +15,16 @@ how to install
 
 ```
 sudo apt-get install vim tmux
+
 ```
+* authorize boorduzz to connect to pidor and vice versa
+
+```
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDTVHK+yXSXHm42vr1RZ4sgKBFdkL3vi1u8BXYD/zkcbJkDSyWWRlU5q/qzEQYVk2zae870jcSQ5oTeoLZ99ujkuGltTCdzcCin24Aoig8ATyztFXoSHIfdUPCw5dbjhQXGWRPIkk1lSGU6mtLJRmVwLeY0rzVSQKdlspQlKBLwFBeIuACZQZfUzbIB2XiHIaoxcUja9fRfsZpo9TsWiqCMbseAj926qUgV2iotTQF7XLF/f+H8j2MR3iltKHqc35y/PiWy2doxRFHjW9I66Bit+ddOBtrsL6AzjxZP1DyoAc7jqhRpVazeXkMeNPMigpsV4rhLMEeVi2OqgTO7d3Jv root@pidor" >> /home/pi/.ssh/authorized_keys
+```
+copy the file doorbuzz private key to /home/pi/.ssh/doorbuzz (backup of the key located on pidor at /root/.ssh/doorbuzz)
+
+
 
 * If you want to chroot into the image have a look at [this script](https://github.com/CIRCL/Circlean/blob/master/proper_chroot.sh)
 
