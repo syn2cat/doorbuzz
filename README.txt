@@ -42,6 +42,8 @@ git clone https://github.com/syn2cat/doorbuzz
 cd doorbuzz
   git config --global user.email "infolevel2.lu"
   git config --global user.name "Door Buzz"
+  git remote set-url origin git@github.com:syn2cat/doorbuzz.git
+
 
 
 * If you want to chroot into the image have a look at [this script](https://github.com/CIRCL/Circlean/blob/master/proper_chroot.sh)
