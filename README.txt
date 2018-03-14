@@ -35,6 +35,8 @@ echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDTVHK+yXSXHm42vr1RZ4sgKBFdkL3vi1u8BX
 ```
 copy the doorbuzz private key to /home/pi/.ssh/doorbuzz (backup of the key located on pidor at /root/.ssh/doorbuzz)
 
+cp -p ~/.ssh/doorbuzz ~/.ssh/id_rsa
+
 * get the package
 cd /home/pi
 git clone https://github.com/syn2cat/doorbuzz
