@@ -14,39 +14,63 @@ how to install
 * The basics
 
 ```
+sudo apt-get update
+sudo apt-get dist-upgrade
 sudo apt-get install vim tmux
+# now you get funky errors: "unexpected end of file or stream"
+# fix it:
+sudo apt-get clean
+sudo apt-get --fix-broken install
 
+* sometimes you ask yourself why the locales are not generated as needed
+sudo sed -i "$(locale | awk -F= '$2!=""{gsub("\"","");if(!a[$2]++){print "s/# *" $2 "/" $2 "/;"}}' )" /etc/locale.gen
+sudo locale-gen
 ```
 * authorize boorduzz to connect to pidor and vice versa
 
 ```
+mkdir /home/pi/.ssh
+chmod go= /home/pi/.ssh /home/pi/.ssh/authorized_keys
 echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDTVHK+yXSXHm42vr1RZ4sgKBFdkL3vi1u8BXYD/zkcbJkDSyWWRlU5q/qzEQYVk2zae870jcSQ5oTeoLZ99ujkuGltTCdzcCin24Aoig8ATyztFXoSHIfdUPCw5dbjhQXGWRPIkk1lSGU6mtLJRmVwLeY0rzVSQKdlspQlKBLwFBeIuACZQZfUzbIB2XiHIaoxcUja9fRfsZpo9TsWiqCMbseAj926qUgV2iotTQF7XLF/f+H8j2MR3iltKHqc35y/PiWy2doxRFHjW9I66Bit+ddOBtrsL6AzjxZP1DyoAc7jqhRpVazeXkMeNPMigpsV4rhLMEeVi2OqgTO7d3Jv root@pidor" >> /home/pi/.ssh/authorized_keys
 ```
-copy the file doorbuzz private key to /home/pi/.ssh/doorbuzz (backup of the key located on pidor at /root/.ssh/doorbuzz)
+copy the doorbuzz private key to /home/pi/.ssh/doorbuzz (backup of the key located on pidor at /root/.ssh/doorbuzz)
 
+* get the package
+cd /home/pi
+git clone https://github.com/syn2cat/doorbuzz
+
+cd doorbuzz
+  git config --global user.email "infolevel2.lu"
+  git config --global user.name "Door Buzz"
 
 
 * If you want to chroot into the image have a look at [this script](https://github.com/CIRCL/Circlean/blob/master/proper_chroot.sh)
 
-* Remove screensaver from `/etc/xdg/lxsession/LXDE/autostart`
+* Remove screensaver from `/etc/xdg/lxsession/LXDE/autostart `
 
 ``` bash
 sudo vi /etc/xdg/lxsession/LXDE/autostart
 ```
 
 * Copy the files present in `root_files` accordingly on the file system
-* Set the hostname: replace the content of `/etc/hostname` with door-buzz
+** sets IP without using dhcp
+** sets hostname (replace the content of `/etc/hostname` with door-buzz)
+** sets localhost alias
+** removes screensaver in /etc/xdg/lxsession/LXDE/autostart
+** configures lirc
 
-* Install the suff
+* Install the stuff
 
 ``` bash
 sudo apt-get install unclutter xdotool git-core screen imagemagick x11-xserver-utils
+cd /home/pi
 git clone git://git.drogon.net/wiringPi
 cd wiringPi
 ./build
 
-git clone https://github.com/syn2cat/doorbuzz
 cat > /home/pi/.config/lxsession/LXDE-pi/autostart <<"EOF"
+@lxpanel --profile LXDE-pi
+@pcmanfm --desktop --profile LXDE-pi
 @xset s off
 @xset -dpms
 @xset s noblank
@@ -70,7 +94,7 @@ when booting, the button led uses morsecode to send the low byte of the IP adres
 
 `phone_notification_client.sh` communicates with pidor's `doorbuzz_wrapper.sh` to command the flash light
 
-# new: using redis to manage the 60 led circle
+* new: using redis to manage the 60 led circle
 
 ```
 sudo apt-get install python-pip redis-server python-redis
@@ -88,11 +112,11 @@ cd python
 sudo python setup.py install
 ```
 
-# setup watchdog
+* setup watchdog
 
 ```
-sudo modprobe bcm2708_wdog
-echo "bcm2708_wdog" | sudo tee -a /etc/modules
+sudo modprobe bcm2835_wdt
+echo "bcm2835_wdt" | sudo tee -a /etc/modules
 
 
 sudo apt-get install watchdog
@@ -109,10 +133,10 @@ sudo service watchdog start
 Note: `projectionscreen.sh` is a standalone program called remotely by pidor because pidor knows the IP adress of the projector but doorbuzz has the RF remote connected.
 The remote command works with ssh, so install pidor's root pub key into `~pi/.ssh/authorized_keys`
 
-# setup lirc for AV-receiver remote control
+* setup lirc for AV-receiver remote control
 
 ```
-sudo-apt-get install lirc
+sudo apt-get install lirc
 sudo /bin/su -c "echo 'dtoverlay=lirc-rpi,gpio_out_pin=17,gpio_in_pin=21' >> /boot/config.txt"
 ```
 
