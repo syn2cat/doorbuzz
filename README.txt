@@ -139,9 +139,16 @@ The remote command works with ssh, so install pidor's root pub key into `~pi/.ss
 
 * setup lirc for AV-receiver remote control
 
+this is the new way of doing lirc, doc is not yet tested to replay correctly. ymmv
+
+copy (if not yet done) files from ~pi/doorbuzz/root_files/etc/lirc/ to /etc/lirc/
+https://www.raspberrypi.org/forums/viewtopic.php?t=192891
 ```
 sudo apt-get install lirc
 sudo /bin/su -c "echo 'dtoverlay=lirc-rpi,gpio_out_pin=17,gpio_in_pin=21' >> /boot/config.txt"
+echo "lirc_dev" >> /etc/modules
+echo "lirc_rpi gpio_in_pin=21 gpio_out_pin=17" >> /etc/modules
+systemctl start lidcd.socket lircd.service
 ```
 
 
